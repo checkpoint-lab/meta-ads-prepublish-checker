@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>ストア用スクリーンショットの元ページ（テスト用の画面）</title>
+<style>
+  :root { --bg:#f3f5f7; --card:#fff; --line:#d9dfe5; --fg:#1b2530; --muted:#5b6875; --accent:#1b6cd1; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:"Yu Gothic UI","Hiragino Sans",system-ui,sans-serif; background:var(--bg); color:var(--fg); font-size:14px; line-height:1.6; }
+  header { background:#fff; border-bottom:1px solid var(--line); padding:14px 28px; display:flex; justify-content:space-between; align-items:center; }
+  header b { font-size:16px; }
+  .tag { font-size:12px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:2px 10px; }
+  main { display:grid; grid-template-columns: minmax(0,1fr) 320px; gap:20px; padding:20px 28px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin-bottom:16px; }
+  h2 { font-size:14px; margin:0 0 8px; }
+  .row { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:8px 0; border-top:1px solid var(--line); }
+  .row:first-of-type { border-top:0; }
+  .desc { color:var(--muted); font-size:12px; margin-top:2px; }
+  .sw { width:38px; height:22px; border-radius:11px; background:#b9c2cb; position:relative; flex:none; }
+  .sw[aria-checked="true"] { background:var(--accent); }
+  .sw::after { content:""; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:#fff; transition:none; }
+  .sw[aria-checked="true"]::after { left:18px; }
+  .summary { font-size:13px; color:#33404c; }
+  .summary div { margin:2px 0; }
+  .preview { height:260px; background:#e6ebf0; border-radius:8px; display:grid; place-items:center; color:var(--muted); }
+  .note { position:fixed; top:64px; right:28px; font-size:11px; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><b>広告の編集（テスト用の画面）</b><span class="tag">イメージです。実際の広告マネージャの画面ではありません</span></header>
+<main>
+  <div>
+    <div class="card" id="c-summary">
+      <h2>クリエイティブ</h2>
+      <div class="summary">
+        <div>Advantage+ クリエイティブエンハンス (4/5件)</div>
+        <div>オフ: アニメーションを追加</div>
+        <div>オン: オーバーレイを追加、ビジュアルのタッチアップ、音楽を追加、他1件</div>
+        <div>基本的なエンハンス (2/4件)</div>
+        <div>オフ: 明るさとコントラストを調整、スポットライトを表示</div>
+        <div>オン: 関連度が高いコメント、CTAエンハンス</div>
+        <div>クリエイティブの設定 (0/3件)</div>
+        <div>オフ: ブランディング、サイトリンク、ウェブサイトのハイライト</div>
+      </div>
+    </div>
+    <div class="card" id="c-format">
+      <h2>フォーマット</h2>
+      <div class="row"><div><div>複数広告主の広告</div><div class="desc">あなたの広告は、同じ広告ユニットの他の広告と一緒に表示される可能性があります。</div></div><div class="sw" role="switch" aria-checked="true" aria-label="オン/オフ" tabindex="0"></div></div>
+    </div>
+    <div class="card" id="c-lang">
+      <h2>言語</h2>
+      <div class="row"><div><div>言語</div><div class="desc">広告にご自身の翻訳や自動翻訳を追加することで、より多くの言語のターゲットにリーチできます。</div></div><div class="sw" role="switch" aria-checked="false" aria-label="オン/オフ" tabindex="0"></div></div>
+    </div>
+  </div>
+  <div class="card"><h2>広告プレビュー</h2><div class="preview">プレビュー（イメージ）</div></div>
+</main>
+<script src="../extension/rules.js"></script>
+<script src="../extension/scanner.js"></script>
+<script src="../extension/content.js"></script>
+<script>
+  (function () {
+    var scene = new URLSearchParams(location.search).get('scene') || 'ng';
+    if (scene === 'pending') {
+      // まとめ文を持たない画面（一部の項目だけが見えている状態）
+      var s = document.getElementById('c-summary'); if (s) s.remove();
+    }
+    setTimeout(function () {
+      var host = document.getElementById('mpc-host');
+      if (!host) return;
+      var sh = host.shadowRoot;
+      sh.getElementById('fab').click();
+      if (scene === 'scrolled') {
+        setTimeout(function () { var p = sh.getElementById('panel'); p.scrollTop = p.scrollHeight; }, 200);
+      }
+    }, 400);
+  })();
+</script>
+</body>
+</html>

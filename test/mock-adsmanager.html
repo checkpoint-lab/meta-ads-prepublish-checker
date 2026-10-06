@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>モック広告作成画面（テスト用）</title>
+<style>
+  body { font-family: sans-serif; padding: 24px; max-width: 640px; }
+  .item { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #ddd; }
+  .vh { position:absolute; opacity:0; width:1px; height:1px; } /* 見えない本物のinput */
+</style>
+</head>
+<body>
+<h1>広告作成（モック）</h1>
+<p>実際のMeta広告マネージャではなく、スキャナの動作確認用に似せた構造です。</p>
+
+<h2>Advantage+ クリエイティブ</h2>
+<!-- パターンA: role=switch + 隣接する文字 -->
+<div class="item"><div><div>テキストの改善</div><div>テキストを最適化します</div></div><div role="switch" aria-checked="false" tabindex="0">○</div></div>
+<div class="item"><div>オーバーレイを追加</div><div role="switch" aria-checked="true" tabindex="0">●</div></div>
+<!-- パターンB: ネイティブcheckbox + label -->
+<div class="item"><label for="cb1">関連度が高いコメント</label><input id="cb1" type="checkbox"></div>
+<!-- パターンC: 見えないinput + 見えるラッパー(role=switch)内にinput -->
+<div class="item"><span>明るさとコントラスト</span><div role="switch" aria-checked="true"><input class="vh" type="checkbox" checked></div></div>
+<!-- パターンD: aria-label -->
+<div class="item"><span>(装飾)</span><div role="switch" aria-checked="false" aria-label="柔軟性のあるメディア"></div></div>
+
+<h2>フォーマット</h2>
+<div class="item"><label><input type="checkbox" checked> 複数広告主の広告</label></div>
+
+<h2>追加ケース</h2>
+<!-- 説明文に別項目の語を含む（タイトルは「テキストを翻訳」ではなく「音楽」） -->
+<div class="item"><div><div>音楽</div><div>広告に合わせて翻訳された曲名を表示します</div></div><div role="switch" aria-checked="false"></div></div>
+<!-- スイッチの直近の親が状態文言だけ（ラベルはその外側にある） -->
+<div class="item"><div><div>クリエイティブ翻訳（テキスト）</div><div><span>オン</span><div role="switch" aria-checked="true"></div></div></div></div>
+<!-- どの項目にも当てはまらない -->
+<div class="item"><div>画像の拡張</div><div role="switch" aria-checked="true"></div></div>
+<div class="item"><label><input type="checkbox"> 広告をテンプレートとして保存</label></div>
+<!-- 状態を読めない -->
+<div class="item"><div>柔軟性のあるメディア（要素）</div><div role="switch"></div></div>
+
+<h2>実機の構造を模したケース（2回目）</h2>
+<!-- タイトル行とスイッチだけの小さい箱＋説明文が外側の別要素にある（実機の「言語」と同じ構造） -->
+<div id="lang-card"><div class="item"><div><strong>言語</strong></div><div>オフ <div role="switch" aria-checked="false" aria-label="オン/オフ"></div></div></div>
+<p>広告にご自身の翻訳や自動翻訳を追加することで、より多くの言語のターゲットにリーチできます。</p></div>
+<!-- aria-label が状態文言のスイッチ。ラベルは周囲の文字 -->
+<div class="item"><div>広告掲載中に、関連するサイトリンクを特定して追加</div><div role="switch" aria-checked="false" aria-label="オフ"></div></div>
+<!-- 画面外になると描画から外れるカード（仮想化の模擬）。下のボタンで取り外す -->
+<div id="virt-card"><div class="item"><div>トリミングと拡大 Meta AI</div><div role="switch" aria-checked="true"></div></div></div>
+<button id="virt-remove" type="button">（テスト用）上のカードを描画から外す</button>
+<script>document.getElementById('virt-remove').addEventListener('click', function () { var c = document.getElementById('virt-card'); if (c) c.remove(); });</script>
+
+<h2>設定のまとめ文（実機の広告編集画面と同じ文言）</h2>
+<div>
+<div>Advantage+ クリエイティブエンハンス (4/5件)</div>
+<div>オフ: アニメーションを追加</div>
+<div>オン: オーバーレイを追加、ビジュアルのタッチアップ、音楽を追加、他1件</div>
+<div>基本的なエンハンス (2/4件)</div>
+<div>オフ: 明るさとコントラストを調整、スポットライトを表示</div>
+<div>オン: 関連度が高いコメント、CTAエンハンス</div>
+</div>
+
+<h2>非表示・ラベルなし</h2>
+<div aria-hidden="true"><div class="item"><span>クリエイティブ翻訳（非表示領域）</span><div role="switch" aria-checked="true"></div></div></div>
+<div style="display:none"><div class="item"><span>音楽（display:none）</span><div role="switch" aria-checked="true"></div></div></div>
+<div class="item"><div role="switch" aria-checked="false"></div></div>
+
+<script src="../extension/rules.js"></script>
+<script src="../extension/scanner.js"></script>
+<script src="../extension/content.js"></script>
+</body>
+</html>
